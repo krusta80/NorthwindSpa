@@ -12,14 +12,22 @@
           <table class='table'>
               <thead>
                   <tr>
-                      <th>Name</th>
-                      <th>Priority</th>
+                      <th style="width: 70%">Name</th>
+                      <th style="text-align: right">Priority</th>
+                      <th style="text-align: right"></th>
                   </tr>
               </thead>
               <tbody>
                   <tr ng-repeat="(key, appointment) in appointments">
                       <td>{{appointment.name}}</td>
-                      <td>{{appointment.priorityFloor}}</td>
+                      <td style="text-align: right">
+                          {{appointment.priorityFloor}}
+                      </td>
+                      <td>
+                          <button ng-click="moveUp(key)">/\</button>
+                          <button ng-click="moveDown(key)">\/</button>
+                          <button ng-click="delete(key)">X</button>
+                      </td>
                   </tr>
               </tbody>
           </table>

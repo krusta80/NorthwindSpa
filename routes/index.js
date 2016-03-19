@@ -34,7 +34,6 @@ router.delete('/appointment/:id', function(req,res,next) {
 router.put('/appointment/:id', function(req,res,next) {
 	Appointment.findById(req.params.id)
 	.then(function(appointment) {
-		appointment.name = req.body.name;
 		appointment.priority = req.body.priority;
 		return appointment.save();
 	})

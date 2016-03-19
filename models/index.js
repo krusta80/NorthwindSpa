@@ -3,7 +3,7 @@ mongoose.connect('mongodb://localhost');
 
 var appointmentSchema = new mongoose.Schema({
 	name: {type: String, required: true},
-	priority: {type: Number, required: true, unique: true, min: 1}
+	priority: {type: Number, required: true, min: 1}
 });
 
 appointmentSchema.virtual('priorityFloor')
@@ -16,7 +16,6 @@ appointmentSchema.set('toJSON', {
 });
 
 appointmentSchema.pre('validate', function(next) {
-	console.log("  PREVALIDATE: priority is ")+this.priority;
 	if(!this.priority)
 		this.priority = 5;
 	if(this.isNew && this.priority !== this.priorityFloor)
