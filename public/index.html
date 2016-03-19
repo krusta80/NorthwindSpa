@@ -23,9 +23,9 @@
                       <td style="text-align: right">
                           {{appointment.priorityFloor}}
                       </td>
-                      <td>
-                          <button ng-click="moveUp(key)">/\</button>
-                          <button ng-click="moveDown(key)">\/</button>
+                      <td style="text-align: right">
+                          <button ng-click="moveUp(key)" ng-show="!$first">/\</button>
+                          <button ng-click="moveDown(key)" ng-show="!$last">\/</button>
                           <button ng-click="delete(key)">X</button>
                       </td>
                   </tr>

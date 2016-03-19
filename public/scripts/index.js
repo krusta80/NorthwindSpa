@@ -22,13 +22,8 @@ spaModule.controller('SpaController', function($scope, $http) {
 	$scope.swapSpots = function(index1,index2) {
 		var url1 = '/api/appointment/'+$scope.appointments[index1]._id;
 		var data1 = {priority: $scope.appointments[index2].priority};
-		
-		var url2 = '/api/appointment/'+$scope.appointments[index2]._id;
-		var data2 = {priority: $scope.appointments[index1].priority};
-		
 		var appt1;
-		var appt2;
-
+		
 		$http.put(url1,data1)
 		.then(function(response) {
 			return response.data;
@@ -36,6 +31,8 @@ spaModule.controller('SpaController', function($scope, $http) {
 		.then(function(appointment) {
 			console.log("updated appointment "+appointment._id);
 			appt1 = appointment;
+			var url2 = '/api/appointment/'+$scope.appointments[index2]._id;
+			var data2 = {priority: $scope.appointments[index1].priority};
 			return $http.put(url2,data2);
 		})
 		.then(function(response) {
@@ -43,7 +40,7 @@ spaModule.controller('SpaController', function($scope, $http) {
 		})
 		.then(function(appointment) {
 			console.log("updated appointment "+appointment._id);
-			appt2 = appointment;
+			var appt2 = appointment;
 			$scope.appointments[index1] = appt2;
 			$scope.appointments[index2] = appt1;
 		})
