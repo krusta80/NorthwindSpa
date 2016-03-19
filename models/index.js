@@ -6,7 +6,8 @@ var appointmentSchema = new mongoose.Schema({
 	priority: {type: Number, required: true, unique: true, min: 1}
 });
 
-appointmentSchema.virtual('priorityFloor').get(function() {
+appointmentSchema.virtual('priorityFloor')
+.get(function() {
 	return Math.floor(this.priority);
 });
 
@@ -15,14 +16,17 @@ appointmentSchema.set('toJSON', {
 });
 
 appointmentSchema.pre('validate', function(next) {
+	console.log("  PREVALIDATE: priority is ")+this.priority;
 	if(!this.priority)
 		this.priority = 5;
+	if(this.isNew && this.priority !== this.priorityFloor)
+		throw new Error('Priority must be a whole number!');
 	next();
 });
 
 appointmentSchema.pre('save', function(next) {
-	if(this.priority === this.priorityFloor)
-		this.priority +=  getTS();
+	if(this.isNew)
+		this.priority += getTS();
 	next();
 });
 

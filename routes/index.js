@@ -2,15 +2,15 @@ var express = require('express');
 var router = express.Router();
 var Appointment = require('../models');
 
-router.get('/appointments', function(req,res) {
+router.get('/appointments', function(req,res,next) {
 	Appointment.find({}).sort({priority: 1, name: 1})
 	.then(function(appointments) {
 		res.send(appointments);
 	})
-	.catch(console.log);
+	.catch(next);
 });
 
-router.post('/appointment', function(req,res) {
+router.post('/appointment', function(req,res,next) {
 	var appointment = new Appointment();
 
 	appointment.name = req.body.name;
@@ -20,18 +20,18 @@ router.post('/appointment', function(req,res) {
 	.then(function(appointment) {
 		res.send(appointment);
 	})
-	.catch(console.log);
+	.catch(next);
 });
 
-router.delete('/appointment/:id', function(req,res) {
+router.delete('/appointment/:id', function(req,res,next) {
 	Appointment.findByIdAndRemove(req.params.id)
 	.then(function(appointment) {
 		res.send(appointment);
 	})
-	.catch(console.log);
+	.catch(next);
 });
 
-router.put('/appointment/:id', function(req,res) {
+router.put('/appointment/:id', function(req,res,next) {
 	Appointment.findById(req.params.id)
 	.then(function(appointment) {
 		appointment.name = req.body.name;
@@ -41,7 +41,7 @@ router.put('/appointment/:id', function(req,res) {
 	.then(function(appointment) {
 		res.send(appointment);
 	})
-	.catch(console.log);
+	.catch(next);
 });
 
 module.exports = router;
