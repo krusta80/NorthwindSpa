@@ -29,10 +29,20 @@ appointmentSchema.pre('save', function(next) {
 var appointmentModel = mongoose.model('Appointment',appointmentSchema);
 
 function getTS() {
-	//	This returns ms since the epoch in decimal form,
-	//	which ensures that every appointment has a unique 
-	//	priority, even if the integer portion (priorityFloor)
-	//	repeats.  :)
+	/*	
+		This returns ms since the epoch in decimal form,
+		which ensures that every appointment has a unique 
+		priority, even if the integer portion (priorityFloor)
+		is non-unique.  
+
+		With this system in place, moving an appointment up 
+		and down is as simple as swapping its priority with
+		its upper or lower neighbor respectively.  :)
+
+		Using a timestamp also ensures that a new appointment 
+		is always added directly BELOW any existing appointments 
+		sharing the same priorityFloor.
+	*/
 
 	var ts = new Date();
 	return ts/Math.pow(10,Math.ceil((Math.log(ts)/Math.log(10))));
