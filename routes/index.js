@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var Appointment = require('../models');
+var Appointment = require('../models').models.Appointment;
 
 router.get('/appointments', function(req,res,next) {
 	Appointment.find({}).sort({priority: 1, name: 1})
@@ -10,7 +10,7 @@ router.get('/appointments', function(req,res,next) {
 	.catch(next);
 });
 
-router.post('/appointment', function(req,res,next) {
+router.post('/appointments', function(req,res,next) {
 	var appointment = new Appointment();
 
 	appointment.name = req.body.name;
@@ -23,7 +23,7 @@ router.post('/appointment', function(req,res,next) {
 	.catch(next);
 });
 
-router.delete('/appointment/:id', function(req,res,next) {
+router.delete('/appointments/:id', function(req,res,next) {
 	Appointment.findByIdAndRemove(req.params.id)
 	.then(function(appointment) {
 		res.send(appointment);
@@ -31,7 +31,7 @@ router.delete('/appointment/:id', function(req,res,next) {
 	.catch(next);
 });
 
-router.put('/appointment/:id', function(req,res,next) {
+router.put('/appointments/:id', function(req,res,next) {
 	Appointment.findById(req.params.id)
 	.then(function(appointment) {
 		appointment.priority = req.body.priority;
