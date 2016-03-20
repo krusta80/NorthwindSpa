@@ -1,15 +1,28 @@
 var spaModule = angular.module('spa', []);
 
+function isNotAWholeNumber(input) {
+	if(!input) return false;
+	if(isNaN(input)) return true;
+	if(input < 1) return true;
+	return input != Math.floor(input);
+}
+
 spaModule.controller('SpaController', function($scope, $http) {
 	
-	$http.get('/api/appointments')
-	.then(function(response) {
-		return response.data;
-	})
-	.then(function(appointments) {
-		$scope.appointments = appointments;
-	})
-	.catch(console.error.bind(console));
+	$scope.refreshAppointments = function() {
+		$http.get('/api/appointments')
+		.then(function(response) {
+			return response.data;
+		})
+		.then(function(appointments) {
+			$scope.appointments = appointments;
+			$scope.newName = "";
+			$scope.newPriority = "";
+			$scope.displayError = false;
+			document.getElementById("newName").focus();
+		})
+		.catch(console.error.bind(console));
+	};
 
 	$scope.moveUp = function(index) {
 		$scope.swapSpots(index-1,index);
@@ -59,5 +72,25 @@ spaModule.controller('SpaController', function($scope, $http) {
 		.catch(console.error.bind(console));
 	}
 
+	$scope.addProduct = function() {
+		if(isNotAWholeNumber($scope.newPriority)) {
+			$scope.displayFormError("Priority must be a whole number!");
+			return;
+		}
+		$http.post('/api/appointment',{name: $scope.newName, priority: $scope.newPriority})
+		.then(function(response) {
+			$scope.refreshAppointments();
+		})
+		.catch($scope.displayFormError);
+	}
+
+	$scope.displayFormError = function(err) {
+		$scope.displayError = true;
+		$scope.errorMessage = "Processing error";
+		console.log(err);
+	}
+
+	$scope.refreshAppointments();
+	
 });
 

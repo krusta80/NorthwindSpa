@@ -16,6 +16,7 @@ appointmentSchema.set('toJSON', {
 });
 
 appointmentSchema.pre('validate', function(next) {
+	console.log("  PRE VALIDATE -> "+JSON.stringify(this));
 	if(!this.priority)
 		this.priority = 5;
 	if(this.isNew && this.priority !== this.priorityFloor)

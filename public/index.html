@@ -2,13 +2,36 @@
   <head>
     <title>Northwind SPA</title>
     <link href="/bootstrap/css/bootstrap.css" rel="stylesheet" />
+    <link href="style.css" rel="stylesheet">
     <script src="/angular/angular.js"></script>
     <script src="./scripts/index.js"></script>
   </head>
   <body>
     <div id="main" class="container-fluid" ng-app="spa">
       <div class="col-xs-10" ng-controller="SpaController">
-        <div class="appointmentList">
+        <h2>NorthWind SPA:  Prioritize Yourself</h2>
+        <div ng-show="displayError" class="alert alert-danger">
+          {{errorMessage}}
+        </div>
+        <form class="form-inline" role="form">
+            <div class="row">
+              <div class="col-sm-12">
+                <input class="form-inline" style="width:100%" type="text" id="newName" ng-model="newName" name="name" placeholder="name" autofocus>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12">
+                <input class="form-inline" style="width:100%" type="text" ng-model="newPriority" name="priority" class="form-control" placeholder="priority (default 5)">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-2">
+                <button type="submit" class="pull-center" ng-click="addProduct()">Save</button>
+              </div>    
+            </div>
+         </form>
+
+        <div class="appointmentList"> 
           <table class='table'>
               <thead>
                   <tr>
