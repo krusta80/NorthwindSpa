@@ -87,6 +87,7 @@ spaModule.controller('SpaController', function($scope, $http) {
 	$scope.displayFormError = function(err) {
 		$scope.displayError = true;
 		$scope.errorMessage = "Processing error";
+		document.getElementById("newName").focus();
 		console.log(err);
 	}
 
