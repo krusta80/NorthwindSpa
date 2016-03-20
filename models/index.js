@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost');
+var Promise = require('bluebird');
+//how about a connect method?
 
 var appointmentSchema = new mongoose.Schema({
 	name: {type: String, required: true},
@@ -30,7 +31,7 @@ appointmentSchema.pre('save', function(next) {
 	next();
 });
 
-var appointmentModel = mongoose.model('Appointment',appointmentSchema);
+var Appointment = mongoose.model('Appointment',appointmentSchema);
 
 function getTS() {
 	/*	
@@ -52,4 +53,24 @@ function getTS() {
 	return ts/Math.pow(10,Math.ceil((Math.log(ts)/Math.log(10))));
 }
 
-module.exports = appointmentModel;
+var _conn = null;
+module.exports = {
+  connect: function(){
+    if(_conn)
+      return _conn;
+    _conn = new Promise(function(resolve, reject){
+      mongoose.connect(process.env.CONN || 'mongodb://localhost/johng-spa', function(err){
+          if(err)
+            return reject(err);
+          resolve(mongoose.connection);
+          });
+    
+    });
+    return _conn;
+  
+
+  },
+  models: {
+    Appointment: Appointment
+  }
+};

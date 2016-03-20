@@ -1,8 +1,10 @@
 var express = require('express');
+var path = require('path');
 var app = express();
 var morgan = require('morgan');
 var bodyParser = require('body-parser');
 var router = require('./routes');
+var db = require('./models');
 
 app.use(morgan('combined'));
 app.use(bodyParser.json());
@@ -14,7 +16,10 @@ app.use('/angular', express.static(__dirname + '/node_modules/angular'));
 app.use('/api',router);
 
 app.get('/', function(req,res) {
-	res.redirect('/index.html');
-})
+  res.sendFile(path.join(__dirname, 'public/index.html'));
+});
 
-app.listen(1337);
+db.connect()
+  .then(function(){
+    app.listen(1337);
+  });
